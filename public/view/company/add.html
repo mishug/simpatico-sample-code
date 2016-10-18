@@ -1,0 +1,90 @@
+<user-header></user-header>
+
+<div class="dash-complete">
+    <sidebaruser-dashboardl> </sidebaruser-dashboardl>
+    <!--left dashboard end-->
+    <!--css-->
+    <style type="text/css">
+        #map_canvas {
+            position: relative;
+        }
+
+        .angular-google-map-container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+    </style>
+    <!--right dashboard start-->
+    <div class="col-lg-9 col-md-9 right-dash">
+        <div class="dash-edit-profile-sctn " >
+            <h2>Add New Company</h2>
+            <form role="form" name ="companyadd" ng-submit="addCompany()"  name="detail" novalidate >
+                <div class="dash-edit-profile-sctn-inner">
+                    <div class="edit-text-box"><label>Name: <em>*</em></label> 
+                        <input  type="text" name='name' placeholder="" ng-maxlength="20"  ng-model="company.name" required />
+                        <span class="eror-msg" ng-if="companyadd.name.$dirty" ng-messages="companyadd.name.$error"><p ng-message="required" class='error'>Company name is required.</p></span>
+                    </div>
+
+                    <div class="edit-text-box"><label>Location: </label> 
+                        <!-- <input  type="text" name='location' placeholder=""  ng-model="company.location" required />
+                          <span class="eror-msg" ng-if="companyadd.location.$dirty" ng-messages="companyadd.location.$error">
+                          <p ng-message="required" class='error'>Company location is required.</p></span> -->
+                        <div id="searchBoxParent"></div>
+                        <div id="map_canvas" >
+                            <input type="text" placeholder="Search Location">
+                            <!-- <script type="text/ng-template" id="searchbox.tpl.html">
+                                <input type="text" placeholder="Search Location">
+                            </script> -->
+                            <!--    <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options">
+                                   <ui-gmap-search-box template="searchbox.template" events="searchbox.events" parentdiv="searchbox.parentdiv"></ui-gmap-search-box>
+                               </ui-gmap-google-map> -->
+                        </div>
+
+                    </div>
+
+                    <div class="edit-text-box"><label>Business entities: </label> 
+                        <!-- <input type="text" name='entities' placeholder=""  ng-model="company.entities"  /> -->
+                        <!-- <input type="text" placeholder="" ng-model="company.parent"  ng-model-options="modelOptions" uib-typeahead="companies as companies.name for companies in getexistCompany($viewValue)" />
+                        -->
+                        <tags-input ng-model="company.parent" 
+                                    display-property="name"
+                                    placeholder="Add parent company" 
+                                    replace-spaces-with-dashes="false"
+                                    add-from-autocomplete-only="true"
+                                    on-tag-added="tagAdded($tag)"
+                                    on-tag-removed="tagRemoved($tag)">
+                            <auto-complete source="getexistCompany($query)" 
+                                           min-length="0" 
+                                           debounce-delay="0"
+                                           max-results-to-show="10"></auto-complete>
+                        </tags-input>
+                        <input type="hidden" ng-model="company.parent_id"/>
+                    </div>
+                    <div class="tagerror">
+                        <div class="errorLabel">&nbsp;</div>
+                        <div class="errorContent"><span ng-bind-html="myHTML"></span></div>
+                    </div>
+                    <div class="edit-text-box"><label>Activities: </label>
+                        <div class="text-form-editr" text-angular ng-model="company.activities"></div>  
+                    </div>
+
+                    <!-- <div class="edit-text-box"><label>Product</label> 
+                            <input type="text" placeholder="" ng-model="company.product_name"  ng-model-options="modelOptions" uib-typeahead="product as product.name for product in getlocalProducts($viewValue)" />
+                    <input type="hidden" ng-model="company.product_id"/>
+                    </div> -->
+
+                    <div class="edit-text-box">
+                        <button type="submit" ng-disabled="companyadd.$invalid" class="submit-btn-edit-profile" id="company_submit">Submit</button>   
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <!--right dashboard end-->
+
+</div>
+<user-footer></user-footer>

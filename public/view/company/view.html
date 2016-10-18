@@ -1,0 +1,180 @@
+<user-header></user-header>
+
+<div class="dash-complete">
+    <sidebaruser-dashboardl> </sidebaruser-dashboardl>
+    <!--left dashboard end-->
+
+    <!--right dashboard start-->
+    <div class="col-lg-9 col-md-9 right-dash cmpny-page" ng-init="getCompanyData()"> 
+        <div class="rght-prdct-comnt-box dash-view-forum">
+            <div class="user-name-cmnt ng-scope">
+                <a style="float:right;" ui-sref="company-edit({id:company._id})" title="Edit" ng-if="company.user_id == user_id" ><i class="fa fa-pencil-square-o edit-cmpny-icn" aria-hidden="true"></i>
+                </a> 
+                <span class="edit-cmpny-icn"> | </span>
+                <a style="float:right;" ng-confirm-click="Would you like to delete this company?" confirmed-click="deleteCompany(company._id)" title="Delete" ng-if="company.user_id == user_id" ><i class="fa fa-trash-o edit-cmpny-icn" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="msg-board-dtail">
+                <h3>{{company.name}}</h3>
+
+                <div class="star-rating click-rating-disable ng-isolate-scope cmpny-page-rating" is-disable="true" star-rating="" rating-value="company.companyAvgRating.total_avrg" data-max="5"></div>
+
+                <a ng-if="userfavcompany.indexOf(company._id) <= -1" class="add-fav-gren-btn">Add to favorite<img  src="lib/img/heart-icn-green.png" title="Save as favorite" ng-click="companyAsFav(company._id, user_id, 'add', 'single');"  /></a>
+
+                <a ng-if="userfavcompany.indexOf(company._id) > -1" class="add-fav-gren-btn">Already as Favorite<img  title="Already as Favorite" src="lib/img/heart-icn-green-fill.png" ng-click="companyAsFav(company._id, user_id, 'remove', 'single');"  ></a>
+
+                <!-- <a class="add-fav-gren-btn">Add to favorite <img src="lib/img/heart-icn-green.png" alt="Add to favorite " title="Add to favorite "></a>
+                -->
+                <div class="view-form-rght-img-box">
+
+                    <div class="view-form-user-name">
+                        <span>Posted by <a ui-sref="view-profile({id:company.user._id})">{{company.user.first_name}} {{company.user.last_name}}</a></span>
+                    </div>
+
+                    <div class="view-form-post-date">
+                        <p><strong>Created on:</strong> {{company.created_at| amDateFormat:'dddd, MMMM Do YYYY'}}</p>
+                    </div>
+                    <div ng-bind-html='company.activities'> </div>
+                    <div ng-if="company.location" class="cmpny-page-add"><i aria-hidden="true" class="fa fa-map-marker"></i> {{company.location}}</div>
+
+                    <div class="forum-community cmpny-page-link-prdcts">
+                        <label>Affiliated Business Entities 
+                            
+                            <a ng-click="openModelAddBusinessEntity('lg')" class="addfourm plusrightbtn" title="Add Company">+</a>
+                            <!--<a ui-sref="company-add" class="addfourm plusrightbtn" title="Add Company">+</a>-->
+                        </label>
+                        <ul >
+                            <!-- <li ng-if="company.company_product.length <= 0"><a ui-sref="user-product">Add new Product</a></li> -->
+                            <li ng-if="company.parent.length > 0" ng-repeat="compParent in company.parent">
+                                <a ui-sref="company-view({id:compParent.parent_id})" title="View Company" >{{compParent.comapnies.name}} </a>
+                            </li>
+                        </ul>
+                        <!--                        <a ng-if="company.parent.comapnies != null" ui-sref="company-view({id:company.parent.parent_id})" class="entities" >Other affiliated business entities</a>
+                                                <a ng-if="company.parent.comapnies == null" ui-sref="company-add" class="entities" >Other affiliated business entities</a>-->
+
+                    </div>
+                    <div class="forum-community cmpny-page-link-prdcts">
+                        <label>Products 
+                             
+                             <a class="addfourm plusrightbtn" ng-click="openModelAddNewProduct('lg');">+</a>
+                            <!--<a class="addfourm plusrightbtn" ui-sref="link-product({id:company._id})">+</a>-->
+                        </label>
+                        <ul >
+                            <!-- <li ng-if="company.company_product.length <= 0"><a ui-sref="user-product">Add new Product</a></li> -->
+                            <li ng-if="company.company_product.length > 0"  ng-repeat="compPro in company.company_product">
+                                <a ui-sref="view-product({id:compPro.product_id})" title="View Product" >{{compPro.product.name}} </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--                    <div class="forum-community cmpny-page-link-prdcts">
+                                            <label>Linked Products: <a class="link-prdct-btn" ui-sref="link-product({id:company._id})">Link new Product..</a></label>
+                                            <ul >
+                                                <li ng-if="company.company_product.length <= 0"><a ui-sref="user-product">Add new Product</a></li> 
+                                                <li ng-if="company.company_product.length > 0"  ng-repeat="compPro in company.company_product">
+                                                    <a ui-sref="view-product({id:compPro.product_id})" title="View Product" >{{compPro.product.name}} </a></li>
+                                            </ul>
+                                        </div>-->
+
+                </div>
+
+
+            </div>
+
+
+            <!--rating forums start-->
+            <div class="rating-reviw-forums prodct-view-forum-sctn ng-scope" >
+                <div class="col-md-7 col-lg-7 rating-review">
+                    <h4>Rating &amp; Reviews</h4>
+                    <div class="reviews-filter">
+                        <span>    
+                            <div class="star-rating click-rating-disable" is-disable='true'  star-rating rating-value="company.companyAvgRating.total_avrg" data-max="5"></div>
+                            {{company.companyAvgRating.total_avrg}} out of 5 stars 
+                        </span>
+
+                    </div>
+
+                    <div class="stars-count">
+                        <div class="stars-count-div"><p>5 star</p><div class="star-rating click-rating-disable" is-disable='true'  star-rating rating-value="5" data-max="5"></div> <span>({{company.companyAvgRating.total_five_rating}})</span></div>
+                        <div class="stars-count-div"><p>4 star</p><div class="star-rating click-rating-disable"  is-disable='true' star-rating rating-value="4" data-max="4"></div> <span>({{company.companyAvgRating.total_four_rating}})</span></div>
+                        <div class="stars-count-div"><p>3 star</p><div class="star-rating click-rating-disable" is-disable='true'  star-rating rating-value="3" data-max="3"></div> <span>({{company.companyAvgRating.total_three_rating}})</span></div>
+                        <div class="stars-count-div"><p>2 star</p><div class="star-rating click-rating-disable" is-disable='true'  star-rating rating-value="2" data-max="2"></div> <span>({{company.companyAvgRating.total_two_rating}})</span></div>
+                        <div class="stars-count-div"><p>1 star</p><div class="star-rating click-rating-disable"  is-disable='true'  star-rating rating-value="1" data-max="1"></div> <span>({{company.companyAvgRating.total_one_rating}})</span></div>
+                    </div>
+
+
+                    <a class="write-review-gren-btn-prdct-page"  ng-click="openModelCompanyReview('lg');">Write a review</a>
+
+                    <h4>Latest Reviews</h4>
+
+                    <!-- ngRepeat: review in company.company_reviews -->
+                    <div class="latst-reviews-box" ng-repeat="review in company.company_reviews">
+                        <div class="profile-sectn-lft">
+                            <img ng-if='!review.user.image'  title="" alt="" src="uploads/noimage.png" class="profile-lft-img">
+                            <img ng-if='review.user.image'  title="" alt="" src="uploads/users/small/{{review.user.image}}" class="profile-lft-img">
+                            <div class="profile-dtail-lft">
+                                <h3><a title="View User" ui-sref="view-profile({id:review.user_id})" ng-if='review.user.first_name' >{{review.user.first_name}} {{review.user.last_name}}</a></h3>
+                                <p ng-if='review.user.city && review.user.state' >{{review.user.city}}, {{review.user.state}}</p>
+                                <div class="followers-dtail"><img title="" alt="" src="lib/img/followers-icn.png"> {{review.user_followers.length}} followers</div>
+                                <div class="followers-dtail"><img title="" alt="" src="lib/img/reviewed-icn.png"> {{review.favorite_products.length}} favorites</div>
+                                <!-- <a ng-if="review.isfollowing" ng-click="dofollow(review.user_id,'unfollow')" ng-show="me!=review.user_id" class="follow-green-btn" >
+                                    <img  src="lib/img/follow-btn-tick.png" alt="" title="" /> Followed</a>
+                                <a ng-if="!review.isfollowing"  ng-click="dofollow(review.user_id,'follow')"  style="cursor: pointer;" ng-if="company.user_id == user_id" class="follow-green-btn" ng-click="dofollow()" >
+                                    Follow</a> -->
+                            </div>
+                        </div>
+                        <div class="user-profile-cmnt">
+
+                            <div class="cmnt-dtail-usr">
+                                <div class="ratng-date"> 
+                                    <span am-time-ago="review.updated_at"></span>
+
+                                    <a class="cur-pointr-link" title="View Review"  >
+                                        <div class="star-rating  click-rating-disable" is-disable='true' star-rating rating-value="review.rating" data-max="5" ></div>
+                                    </a>
+                                </div>
+                                <a ui-sref="company-review({id:review._id})"    class="cur-pointr-link" title="View Review"  >
+                                    <p >{{review.description}} </p>
+                                </a>
+                                <div >
+                                    <a ng-if="review.user_id == user_id" id="delete_review" title="Delete review" confirmed-click="deleteCompanyReview(review._id)"  ng-confirm-click="Would you like to delete this review?" >Delete</a>
+                                    <a ng-if="review.user_id == user_id" id="edit_review" class="user" ui-sref="company-review-edit({id:review._id})" title="Edit" >Edit</a>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="company.company_reviews.length == 0" class="latst-reviews-box">
+                        <div class="medium-txt">No Records Found</div>
+                    </div>
+                </div>
+                <!--rating % reviews end-->
+
+                <div class="col-md-5 col-lg-5 rght-forums-discusng ng-scope" >
+                    <h4>Forums discussing this company</h4>
+                    <div class="right-forums-discusng-box" ng-repeat="fourm in company.company_forum" >
+                        <div class="right-forums-discusng-box-hdng">{{ fourm.user.first_name}} {{ fourm.user.last_name}} added fourm <span am-time-ago="fourm.created_at"></span></div>
+                        <a ui-sref="fourmView({id:fourm._id})" >{{ fourm.title}}</a>
+                        <div ng-bind-html='fourm.description'> </div>
+
+                    </div>
+
+                    <div ng-if="company.company_forum.length == 0" class="no-forum-box-rght" >
+                        <h3>No forums with this Product</h3>
+                        <a ui-sref="fourmAdd">Click here to create new forum</a>
+                    </div>
+
+
+                    <!-- ngIf: productfourms.length > 5 -->
+                </div>
+
+            </div>
+
+            <!--rating forums end-->
+
+
+            <!--right dashboard end-->
+
+        </div>
+    </div>
+    <user-footer></user-footer>

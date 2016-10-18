@@ -1,0 +1,40 @@
+<user-header></user-header>
+  <div class="dash-complete">
+      <sidebaruser-dashboardl> </sidebaruser-dashboardl>
+      <!--left dashboard end-->
+      <!--right dashboard start-->
+    <div class="col-lg-9 col-md-9 right-dash cmpny-list-cntnt" ng-init="compListing()">
+        <div class="right-all-forum-table-box">
+          <div class="forum-list" width="100%%" cellspacing="0" cellpadding="0">
+          <div ng-repeat="comp in company.data" class="cmpny-list">
+              <div class="forum-list-cntnt-box">
+              <h6>
+                <a ui-sref="company-view({id:comp._id})">{{ comp.name  }}</a> 
+                <img ng-if="userfavcompany.indexOf(comp._id)<= -1" src="lib/img/heart-icn-green.png" title="Save as favorite" ng-click="companyAsFav(comp._id,logged_id,'add','multi');"  />
+                <img ng-if="userfavcompany.indexOf(comp._id) > -1" title="Already as Favorite" src="lib/img/heart-icn-green-fill.png" ng-click="companyAsFav(comp._id,logged_id,'remove','multi');"  > 
+                <a ui-sref="company-edit({id:comp._id})" title="Edit" ng-if="comp.user_id == logged_id" ><i class="fa fa-pencil-square-o edit-cmpny-icn" aria-hidden="true"></i>
+                </a>
+                <span ng-if="comp.user_id == logged_id" class="edit-cmpny-icn"> | </span>
+              <a ng-if="comp.user_id == logged_id" ng-confirm-click="Would you like to delete this company?" confirmed-click="deleteCompany(comp._id)" title="Delete" ng-if="company.user_id == user_id" ><i class="fa fa-trash-o edit-cmpny-icn" aria-hidden="true"></i>
+              </a>
+              </h6>
+
+          <div class="forum-list-cntnt-box-inner">
+          <div data-max="5" rating-value="comp.companyAvgRating.total_avrg" star-rating is-disable="true" class="star-rating click-rating-disable"></div>
+          <p> by {{ comp.user.first_name }} {{ comp.user.last_name }}<span>{{comp.created_at  | amDateFormat:'dddd, MMMM Do YYYY'}}</span> </p>
+          <div ng-if="comp.location"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ comp.location }}</div>
+          <p class="descrptn">{{ comp.activities | cut:true:250 | htmlToPlaintext }}</p>
+          </div>
+          </div>
+        </div>
+                 <div ng-if="company.data < 1 " class='large-txt' > No Record Found </div>
+      <div ng-if="company.total > 10"  ng-show="company.next_page_url"  id="loadMore" class="view-more-btn">
+        <a ng-click="loadMore(company.current_page+1)">View More</a>
+      </div>
+      </div>
+    </div> 
+    <!--right dashboard end-->
+
+    </div>
+    </div>
+<user-footer></user-footer>
